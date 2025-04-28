@@ -133,3 +133,14 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
+SECURE_SSL_REDIRECT = False
+WEBSOCKET_MESSAGE_SIZE_LIMIT = 1024
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://900e-2a09-bac5-5983-52d-00-84-ae.ngrok-free.app',
+    'http://127.0.0.1:8000',
+    'http://localhost:8000',
+]

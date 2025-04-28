@@ -1,6 +1,6 @@
-from collections import defaultdict
 import json
 import re
+from collections import defaultdict
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.contrib.auth.models import User
 from asgiref.sync import sync_to_async
@@ -11,12 +11,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
     user_connections = defaultdict(int)
 
     async def connect(self):
-        if self.scope['user'].is_anonymous:
+        if self.scope["user"].is_anonymous:
             await self.close()
             return
 
-        self.room_group_name = 'chat_global11'
-        user = self.scope['user']
+        self.room_group_name = "chat_global11"
+        user = self.scope["user"]
 
         if self.user_connections[user.username] >= 5:
             await self.close(code=4001)
@@ -26,10 +26,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         self.user_connections[user.username] += 1
 
         # Add to group
-        await self.channel_layer.group_add(
-            self.room_group_name,
-            self.channel_name
-        )
+        await self.channel_layer.group_add(self.room_group_name, self.channel_name)
 
         await self.accept()
 
