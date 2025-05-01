@@ -13,6 +13,12 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 
+from django.conf.global_settings import (
+    CSRF_TRUSTED_ORIGINS,
+    STATIC_ROOT,
+    SECURE_PROXY_SSL_HEADER,
+)
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -128,19 +134,22 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = False
 SECURE_SSL_REDIRECT = False
 WEBSOCKET_MESSAGE_SIZE_LIMIT = 1024
 
 CSRF_TRUSTED_ORIGINS = [
     'https://900e-2a09-bac5-5983-52d-00-84-ae.ngrok-free.app',
-    'http://127.0.0.1:8000',
-    'http://localhost:8000',
+    'https://localhost',
 ]
+
+SECURE_SSL_REDIRECT = True
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")

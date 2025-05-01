@@ -29,7 +29,7 @@ services:
 
   minio:
     image: minio/minio
-    container_name: minio
+    container_name: minio_chatapp
     restart: always
     ports:
       - "9000:9000"
@@ -41,6 +41,29 @@ services:
       - ./data:/data
     command:
       - server /data
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx.conf
+      - ./certs:/etc/nginx/certs
+      - ./static:/app/static
+    depends_on:
+      - web
+    networks:
+      - chat-network
+
+  openssl:
+    image: alpine/openssl
+    volumes:
+      - ./certs:/certs
+    command: >
+      req -x509 -nodes -newkey rsa:4096 -keyout /certs/nginx.key
+      -out /certs/nginx.crt -days 365
+      -subj "/C=UA/ST=State/L=Kharkiv/O=Hillel/OU=Lecture/CN=localhost"
 
 volumes:
   redis-data:
